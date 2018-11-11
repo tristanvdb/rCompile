@@ -1,4 +1,3 @@
-#!/usr/bin/python2.7
 
 import os
 import sys
@@ -6,22 +5,7 @@ import json
 import uuid
 import requests
 
-def get_config():
-	config = None
-
-	cfgfile = '{}/.rCompile/config.json'.format(os.path.expanduser("~"))
-	if not os.path.exists(cfgfile):
-		print "Cannot find configuration file: {}".format(cfgfile)
-	else:
-		try:
-			with open(cfgfile) as F:
-				config = json.load(F)
-		except:
-			print "Cannot read the configuration file."
-
-	assert not config is None, "No configuration found..."
-
-	return config
+import rCompile
 
 def detect_and_load_files(argv):
 	files = dict()
@@ -43,7 +27,7 @@ def write_files(files):
 	pass
 
 def main(argv):
-	config = get_config()
+	config = rCompile.get_config(mode='client')
 
 	query = { 'uuid' : str(uuid.uuid4()) , 'command' : argv , 'files' : detect_and_load_files(argv) }
 

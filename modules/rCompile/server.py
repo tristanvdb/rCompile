@@ -1,6 +1,9 @@
+
 import os
 import sys
 import json
+
+import rCompile
 
 import flask
 from flask import Flask
@@ -25,5 +28,7 @@ def rCompile_index():
 	return flask.redirect(flask.url_for('static', filename='index.html'))
 
 def main(argv):
+	config = rCompile.get_config(mode='server')
+
 	app.run(debug=True)
 
