@@ -42,10 +42,8 @@ def submit(query, config):
 def write_files(files):
 	pass
 
-if __name__ == '__main__':
+def main(argv):
 	config = get_config()
-
-	argv = sys.argv[1:]
 
 	query = { 'uuid' : str(uuid.uuid4()) , 'command' : argv , 'files' : detect_and_load_files(argv) }
 

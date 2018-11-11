@@ -1,0 +1,8 @@
+#!/bin/bash -e
+
+export REMOTE_COMPILE_HOME=$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null && pwd )
+
+export PYTHONPATH=$REMOTE_COMPILE_HOME/modules:$PYTHONPATH
+
+python -m rCompile server $@
+

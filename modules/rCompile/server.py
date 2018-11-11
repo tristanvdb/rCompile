@@ -24,6 +24,6 @@ def rCompile_exec():
 def rCompile_index():
 	return flask.redirect(flask.url_for('static', filename='index.html'))
 
-if __name__ == '__main__':
+def main(argv):
 	app.run(debug=True)
 
