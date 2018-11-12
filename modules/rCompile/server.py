@@ -3,6 +3,7 @@ import os
 import sys
 import json
 import shutil
+import subprocess
 
 import rCompile
 
@@ -11,14 +12,28 @@ from flask import Flask
 
 app = Flask(__name__)
 
-def write_client_files(files):
-	pass # TODO
-
 def exec_client_command(command):
-	return ('','') # TODO
+	p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	(out, err) = p.communicate()
+	rc = p.returncode
+	return (rc, out, err)
 
-def save_generated_and_modified_files(files):
-	return dict() # TODO
+def save_generated_and_modified_files(workdir, files):
+	res = dict()
+	for (path, subdirs, files) in os.walk(workdir):
+		for name in files:
+			fpath = os.path.join(path, name)
+			assert fpath.startswith(workdir)
+			fpath = fpath[len(workdir)+1:]
+
+			to_be_saved = not fpath in files
+			if not to_be_saved:
+				to_be_saved = False # TODO if file has changed
+
+			if to_be_saved:
+				res.update(rCompile.read_file_to_record(fpath))
+				
+	return res
 
 @app.route('/exec', methods=['POST'])
 def rCompile_exec():
@@ -45,12 +60,18 @@ def rCompile_exec():
 	os.mkdir(workdir)
 	os.chdir(workdir)
 
-	write_client_files(query['files'])
+	try:
+		rCompile.write_file_from_record(query['files'])
 
-	(stdout,stderr) = exec_client_command(query['command'])
-	response.update({ 'stdout' : stdout, 'stderr' : stderr })
+		(rc, stdout, stderr) = exec_client_command(query['command'])
+		response.update({ 'rc' : rc, 'stdout' : stdout, 'stderr' : stderr })
 
-	response.update({ 'files' : save_generated_and_modified_files(query['files']) })
+		response.update({ 'files' : save_generated_and_modified_files(workdir, query['files']) })
+	except Exception as e:
+        	os.chdir(old_workdir)
+		shutil.rmtree(workdir)
+		print e
+		raise
 
         os.chdir(old_workdir)
 	shutil.rmtree(workdir)

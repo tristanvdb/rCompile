@@ -7,19 +7,6 @@ import requests
 
 import rCompile
 
-def file_is_text(data):
-
-	# TODO
-
-	return True
-
-def encode_binary_data_to_string(data):
-	text = ''
-
-	# TODO
-
-	return text
-
 def detect_and_load_files(argv):
 	args = list()
 	files = dict()
@@ -28,17 +15,8 @@ def detect_and_load_files(argv):
 		if os.path.isfile(arg):
 			path = os.path.realpath(arg)
 			if path.startswith(cwd):
-				with open(path,'r') as F:
-					data = F.read()
-
-				if file_is_text(data):
-					content = 'text'
-				else:
-					content = 'bin'
-					data = encode_binary_data(data)
-
 				path = path[len(cwd)+1:]
-				files.update({ path : { 'content' : content , 'data' : data } })
+				files.update(rCompile.read_file_to_record(path))
 			else:
 				path = None
 		else:
@@ -60,9 +38,6 @@ def submit(query):
 
 	return response
 
-def write_files(files):
-	pass
-
 def main(argv):
 	rCompile.set_config(mode='client')
 
@@ -82,14 +57,18 @@ def main(argv):
 
 	assert response['uuid'] == query['uuid'], "Mismatch between the query and the response unique ID!"
 
+	if 'rc' in response:
+		print "> return code: {}".format(response['rc'])
 	if 'stdout' in response and len(response['stdout']) > 0:
-		print ">> stdout[begin] ==\n{}\n== stdout[end]".format(response['stdout'])
+		print ">> stdout[begin]\n{}\n>> stdout[end]".format(response['stdout'])
 	if 'stderr' in response and len(response['stderr']) > 0:
-		print ">> stderr[begin] ==\n{}\n== stderr[end]".format(response['stderr'])
+		print ">> stderr[begin]\n{}\n>> stderr[end]".format(response['stderr'])
 	if 'files' in response and len(response['files']) > 0:
 		print ">> write files[begin]"
-		for (fid,fpath) in response['files']:
+		for (fid,fpath) in enumerate(response['files'].keys()):
 			print ">>>> OUT[{}]: {}".format(fid, fpath)
 		print ">> write files[end]"
-		write_files(response['files'])
+		rCompile.write_file_from_record(response['files'])
+
+	exit(response['rc'] if 'rc' in response else -1)
 

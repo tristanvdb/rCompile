@@ -3,6 +3,11 @@ import os
 import sys
 import json
 
+from rCompile.utils import read_file_to_record
+from rCompile.utils import write_file_from_record
+
+_all__ = [ 'read_file_to_record' , 'write_file_from_record' ]
+
 config = None
 
 configdir = '{}/.rCompile'.format(os.path.expanduser("~"))
