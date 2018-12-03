@@ -1,16 +1,14 @@
 rCompile: Run Compiler Tools on Remote Server
 =============================================
 ## Installation and Configuration
-On your server (assuming Ubuntu 16.04), install pip and flask
+On both your server and client machines (assuming Ubuntu 16.04), install pip and flask
 ```
 sudo apt-get install python-pip
 sudo pip install --upgrade pip
 sudo pip install flask
 ```
 
-## Examples
-
-### Setup
+### Setup path on both machines
 
 ```
 export PATH=/path/to/rCompile/bin:$PATH
@@ -20,6 +18,7 @@ export PATH=/path/to/rCompile/bin:$PATH
 
 In one shell run the `rServ` command. It launches the Flask application in debug mode.
 
+## Example use
 ### Test 1
 
 In another shell, do:
