@@ -1,5 +1,12 @@
 rCompile: Run Compiler Tools on Remote Server
 =============================================
+## Installation and Configuration
+On your server (assuming Ubuntu 16.04), install pip and flask
+```
+sudo apt-get install python-pip
+sudo pip install --upgrade pip
+sudo pip install flask
+```
 
 ## Examples
 
