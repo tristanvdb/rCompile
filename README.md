@@ -5,7 +5,8 @@ On both your server and client machines (assuming Ubuntu 16.04), install pip and
 ```
 sudo apt-get install python-pip
 sudo pip install --upgrade pip
-sudo pip install flask requests
+sudo pip install flask
+sudo apt-get install python-requests
 ```
 
 Update config/client.json to use the right URL and port for the remote compilation service
