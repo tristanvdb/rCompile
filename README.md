@@ -8,6 +8,21 @@ sudo pip install --upgrade pip
 sudo pip install flask
 ```
 
+Update config/client.json to use the right URL and port for the remote compilation service
+
+```
+{
+  "url" : "http://local:5000"
+}
+```
+Update config/server.json on the server side to set the temporary directory to store files
+```
+{
+  "tmpdir" : "/home/tristan/workspaces/ROSE/rose-server/tmpdir"
+}
+```
+
+
 ### Setup path on both machines
 
 ```
