@@ -18,7 +18,7 @@ def exec_client_command(command):
 	rc = p.returncode
 	return (rc, out, err)
 
-def save_generated_and_modified_files(workdir, files):
+def save_generated_and_modified_files(workdir, in_files):
 	res = dict()
 	for (path, subdirs, files) in os.walk(workdir):
 		for name in files:
@@ -26,7 +26,7 @@ def save_generated_and_modified_files(workdir, files):
 			assert fpath.startswith(workdir)
 			fpath = fpath[len(workdir)+1:]
 
-			to_be_saved = not fpath in files
+			to_be_saved = not fpath in in_files
 			if not to_be_saved:
 				to_be_saved = False # TODO if file has changed
 
