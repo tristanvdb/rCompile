@@ -8,18 +8,20 @@ sudo pip install --upgrade pip
 sudo pip install flask
 sudo apt-get install python-requests
 ```
+We have also tested on Mac OS X. You may need to run the following command line:
+ export PYTHONPATH=/usr/local/lib/python2.7/site-packages
 
 Update config/client.json to use the right URL and port for the remote compilation service
 
 ```
 {
-  "url" : "http://local:5000"
+  "url" : "http://your-server-name-or-ip:5000"
 }
 ```
 Update config/server.json on the server side to set the temporary directory to store files
 ```
 {
-  "tmpdir" : "/home/tristan/workspaces/ROSE/rose-server/tmpdir"
+  "tmpdir" : "/your-server-side/tmpdir"
 }
 ```
 
