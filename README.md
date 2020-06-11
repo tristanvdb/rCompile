@@ -1,19 +1,53 @@
 rCompile: Run Compiler Tools on Remote Server
 =============================================
+## Installation
+On both your server and client machines (assuming Ubuntu 16.04), install pip and flask
+```
+sudo apt-get install python-pip
+sudo pip install --upgrade pip
+sudo pip install flask
+sudo apt-get install python-requests
+```
+clone this repo to each machine's local disk, assuming saved into /local-path/rCompile
 
-## Examples
-
-### Setup
-
+## Configuration
+### Setup path on both machines
+ 
 ```
 export PATH=/path/to/rCompile/bin:$PATH
 ```
 
-### Start server
+On Mac OS X, you may need to run the following command line:
+```
+export PYTHONPATH=/usr/local/lib/python2.7/site-packages
+```
+
+### On server side
+
+You have to open port 5000 on your server to accept UPD/TCP traffic. Please consult your web server admins for how to do this.
+
+Update config/server.json on the server side to set the temporary directory to store files
+```
+{
+  "tmpdir" : "/your-server-side/tmpdir"
+}
+```
+### On client side
+
+Update config/client.json to use the right URL and port for the remote compilation service
+
+```
+{
+  "url" : "http://your-server-name-or-ip:5000"
+}
+```
+
+## Start the server
 
 In one shell run the `rServ` command. It launches the Flask application in debug mode.
 
-### Test 1
+## Use on the Client
+### Example 1
 
 In another shell, do:
 ```
